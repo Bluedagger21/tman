@@ -86,12 +86,12 @@ list_testcases() {
     else
         echo "Testcases:"
         while IFS='|' read -r id name created_date modified_date tarball_status; do
-            echo "ID: $id   Name: $name   Created: $created_date   Modified: $modified_date   Tarball Status: $tarball_status"
+            local directory=$(sqlite3 $DB_FILE "SELECT directory FROM testcases WHERE id=$id;")
+            local size=$(du -sh "$directory" | cut -f1)
+            echo "ID: $id   Name: $name   Size: $size   Created: $created_date   Modified: $modified_date   Tarball Status: $tarball_status"
         done <<< "$testcases"
     fi
 }
-
-
 
 # Function to synchronize testcase directories
 sync_testcases() {
