@@ -178,6 +178,24 @@ tarball_testcase() {
     echo "Testcase '$name' tarballed."
 }
 
+# Show usage information
+usage() {
+    echo "Usage: tman [options]"
+    echo
+    echo "Options:"
+    echo "  -c, --create <name>        Create a new testcase directory"
+    echo "  -d, --delete <name>        Delete a testcase directory"
+    echo "  -l, --list                  List all testcase directories"
+    echo "  -t, --tarball <name>       Tarball a testcase directory"
+    exit 1
+}
+
+# Check if the user passed any arguments
+if [ $# -eq 0 ]; then
+    echo "No arguments provided."
+    usage
+fi
+
 # Parse command-line options
 while getopts "c:d:l:t:" option; do
     case $option in
@@ -193,9 +211,12 @@ while getopts "c:d:l:t:" option; do
         t)
             tarball_testcase "$OPTARG"
             ;;
+        h)
+            usage
+            ;;
         *)
             echo "Invalid option."
-            exit 1
+            usage
             ;;
     esac
 done
